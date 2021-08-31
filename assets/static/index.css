@@ -4,6 +4,7 @@ html {
 body {
   font-family: 'Lato', sans-serif;
   padding-bottom: 30vh;
+  margin: 20px;
 }
 header {
   display: flex;
@@ -14,6 +15,11 @@ header {
 }
 header h1 {
   font-size: 80px;
+}
+@media screen and (max-width: 400px) {
+  header h1 {
+    font-size: 70px;
+  }
 }
 header h1 span {
   background: -webkit-linear-gradient(90deg, #53DD6C, #3367ff);
@@ -32,6 +38,7 @@ header h1 span {
   text-decoration: none;
   font-size: 24px;
   border-radius: 10px;
+  display: block;
 }
 .btn:hover {
   filter: opacity(0.7);

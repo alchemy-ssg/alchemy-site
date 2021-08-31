@@ -5,6 +5,7 @@ html {
 body {
   font-family:'Lato', sans-serif;
   padding-bottom: 30vh;
+  margin: 20px;
 }
 
 header {
@@ -15,6 +16,9 @@ header {
   height:100vh;
   h1 {
     font-size:80px;
+    @media screen and (max-width:400px) {
+      font-size:70px;
+    }
     span {
       background: -webkit-linear-gradient(90deg, #53DD6C, #3367ff);
       background: linear-gradient(90deg, #53DD6C, #3367ff);
@@ -38,6 +42,7 @@ header {
   text-decoration: none;
   font-size:24px;
   border-radius: 10px;
+  display:block;
 }
 
 h2 {
