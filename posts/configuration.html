@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/alchemy/site/assets/css/main.css">
+  <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/github-dark-dimmed.css">
+  <title>Configuration</title>
+
+  <meta name="description" content="A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS">
+  <meta name="author" content="Jack Crane">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Configuration">
+  <meta property="og:url" content="https://blog.jackcrane.rocks/posts/configuration.html">
+  <meta property="og:description" content="A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS">
+  <meta property="article:author" content="Jack Crane">
+  <meta property="article:modified_time" content="1970-01-01T00:00:00.000Z">
+  <meta property="article:tag" content="jack crane, software engineering, web development, ">
+
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Configuration">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+  <script src="http://elasticlunr.com/elasticlunr.min.js"></script>
+  
+</head>
+<body>
+  <header class="site-header">
+  <!-- <div class="wrapper"> -->
+    <!-- <a href="/alchemy/site" class="site-title" rel="author">Alchemy</a> -->
+    <a onclick="document.querySelector('.nav').classList.toggle('show')" class="menu" href="#">
+      <svg viewBox="0 0 100 80" width="15" height="15">
+        <rect width="100" height="20"></rect>
+        <rect y="30" width="100" height="20"></rect>
+        <rect y="60" width="100" height="20"></rect>
+      </svg>
+    </a>
+    <img src="/alchemy/site/assets/static/logomark.png" class="logo-wide" alt="">
+    <img src="/alchemy/site/assets/static/logomark_sm.png" class="logo-small" alt="">
+    <a href="/alchemy/site" class="home">Home</a>
+    <a href="/alchemy/site/posts/getting-started.html" class="download">Download</a>
+    <div class="searchwrapper">
+      <input type="text" placeholder="Search..." id="searchbar">
+      <div class="autocompletions">
+        <!-- <span>asdf</span> -->
+      </div>
+    </div>
+    <script>
+      var idx = elasticlunr(function () {
+        this.setRef('name')
+        this.addField('section_title', {boost: 400})
+        this.addField('page_title', {boost: 200})
+        this.addField('text', {boost: 20})
+      })
+      fetch('/alchemy/site/assets/static/search_data.json')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(function (doc) {
+            idx.addDoc(doc)
+          })
+          console.log(data)
+        });
+      
+      document.getElementById('searchbar').addEventListener('focus', (e) => {
+        document.querySelector('.autocompletions').classList.toggle('show');
+        e.target.classList.toggle('sharpenBottom');
+      })
+      document.getElementById('searchbar').addEventListener('blur', (e) => {
+        setTimeout(() => {
+          document.querySelector('.autocompletions').classList.toggle('show');
+          e.target.classList.toggle('sharpenBottom');
+        }, 500)
+      })
+      document.getElementById('searchbar').addEventListener('keyup', (e) => {
+        document.querySelector('.autocompletions').innerHTML = ''
+        idx.search(e.target.value).forEach(itm => {
+          let a = document.createElement('a');
+          a.href = itm.ref;
+          a.innerHTML = itm.doc.page_title;
+          document.querySelector('.autocompletions').appendChild(a)
+          console.log(itm)
+        })
+      })
+    </script>
+  <!-- </div> -->
+</header>
+<main class="page-content" aria-label="Content">
+  <div class="wrapper">
+    <div class="nav">
+       
+      
+        <a href="/alchemy/site/posts/docs.html">Docs home</a>
+      
+        <a href="/alchemy/site/posts/getting-started.html">Getting Started</a>
+      
+        <a href="/alchemy/site/posts/configuration.html">Configuration</a>
+      
+        <a href="/alchemy/site/posts/markdown.html">Markdown</a>
+      
+        <a href="/alchemy/site/posts/custom-build.html">Custom Build Script</a>
+      
+        <a href="/alchemy/site/posts/theming.html">Theming</a>
+       
+    </div>
+      <div class="main">
+        <h1 id="configuring-alchemy" tabindex="-1">Configuring Alchemy</h1>
+<p>Alchemy is supposed to be extremely customizable and easy to create a boilerplate theme. Alchemy is designed to feel like Jekyll, so we use the same <code>config.yaml</code> and frontmatter variable structure.</p>
+<h2 id="config.yaml" tabindex="-1"><code>Config.yaml</code></h2>
+<p>This is general information, refer to your theme’s documentation for what the theme requires.</p>
+<pre><code class="language-yaml"><span class="hljs-comment"># Your project&#x27;s root directory:</span>
+<span class="hljs-comment"># This will be prepended to all imports (styles, data files, images, and javascript)</span>
+<span class="hljs-attr">root:</span> <span class="hljs-string">&#x27;&#x27;</span>
+
+<span class="hljs-comment"># The title of your website. Unless overwritten by frontmatter, this will be placed into the title element, og:title, and the main header of most themes.</span>
+<span class="hljs-attr">title:</span> <span class="hljs-string">Alchemy</span>  
+
+<span class="hljs-comment"># The description. This is used in meta tags, footers, and secondary headings of some themes</span>
+<span class="hljs-attr">description:</span> <span class="hljs-string">&gt;- 
+  A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS
+</span>
+<span class="hljs-comment"># Your information:</span>
+<span class="hljs-comment"># Used in opengraph information and footers of some themes</span>
+<span class="hljs-attr">author:</span>
+  <span class="hljs-attr">name:</span> <span class="hljs-string">Jack</span> <span class="hljs-string">Crane</span>
+  <span class="hljs-attr">email:</span> <span class="hljs-string">jack@jackcrane.rocks</span>
+
+<span class="hljs-comment"># Used in footers of some themes</span>
+<span class="hljs-attr">socials:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">github</span>
+    <span class="hljs-attr">link:</span> <span class="hljs-string">https://github.com/jackcrane</span>
+    <span class="hljs-attr">username:</span> <span class="hljs-string">jackcrane</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">instagram</span>
+    <span class="hljs-attr">link:</span> <span class="hljs-string">https://www.instagram.com/jackcraneb/</span>
+    <span class="hljs-attr">username:</span> <span class="hljs-string">jackcraneb</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-attr">type:</span> <span class="hljs-string">twitter</span>
+    <span class="hljs-attr">link:</span> <span class="hljs-string">https://www.twitter.com/howdyitsjack</span>
+    <span class="hljs-attr">username:</span> <span class="hljs-string">howdyitsjack</span>
+
+<span class="hljs-comment"># If you have a buymeacoffee.com profile, put it here.</span>
+<span class="hljs-attr">bmac:</span>
+  <span class="hljs-comment"># Do you want a &#x27;button&#x27; or &#x27;widget&#x27;</span>
+  <span class="hljs-attr">type:</span> <span class="hljs-string">button</span>
+  <span class="hljs-comment"># Your bmac username</span>
+  <span class="hljs-attr">username:</span> <span class="hljs-string">jackcrane</span>
+  <span class="hljs-comment"># Color of button or widget trigger</span>
+  <span class="hljs-attr">color:</span> <span class="hljs-string">&#x27;#FFDD00&#x27;</span>
+  <span class="hljs-comment"># Message to pop up on widget trigger</span>
+  <span class="hljs-attr">message:</span> <span class="hljs-string">Feeling</span> <span class="hljs-string">Generous?</span>
+
+<span class="hljs-comment"># Global tags, added to tags specified in frontmatter</span>
+<span class="hljs-attr">tags:</span> <span class="hljs-string">alchemy,</span> <span class="hljs-string">static</span> <span class="hljs-string">site</span> <span class="hljs-string">generator,</span> <span class="hljs-string">ssg</span>
+</code></pre>
+
+        
+    
+<div class="footer">
+  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="jackcrane" data-description="Support me on Buy me a coffee!" data-message="Feeling Generous?" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+  
+  <script>
+    document.querySelectorAll('pre>code').forEach(e => e.classList.add('hljs'))
+  </script>
+</div>
+
+
+      </div>
+</div>
+</main>
+</body>
+</html>

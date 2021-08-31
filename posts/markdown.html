@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/alchemy/site/assets/css/main.css">
+  <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/github-dark-dimmed.css">
+  <title>Markdown</title>
+
+  <meta name="description" content="A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS">
+  <meta name="author" content="Jack Crane">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Markdown">
+  <meta property="og:url" content="https://blog.jackcrane.rocks/posts/markdown.html">
+  <meta property="og:description" content="A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS">
+  <meta property="article:author" content="Jack Crane">
+  <meta property="article:modified_time" content="1970-01-01T00:00:00.000Z">
+  <meta property="article:tag" content="jack crane, software engineering, web development, ">
+
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Markdown">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+  <script src="http://elasticlunr.com/elasticlunr.min.js"></script>
+  
+</head>
+<body>
+  <header class="site-header">
+  <!-- <div class="wrapper"> -->
+    <!-- <a href="/alchemy/site" class="site-title" rel="author">Alchemy</a> -->
+    <a onclick="document.querySelector('.nav').classList.toggle('show')" class="menu" href="#">
+      <svg viewBox="0 0 100 80" width="15" height="15">
+        <rect width="100" height="20"></rect>
+        <rect y="30" width="100" height="20"></rect>
+        <rect y="60" width="100" height="20"></rect>
+      </svg>
+    </a>
+    <img src="/alchemy/site/assets/static/logomark.png" class="logo-wide" alt="">
+    <img src="/alchemy/site/assets/static/logomark_sm.png" class="logo-small" alt="">
+    <a href="/alchemy/site" class="home">Home</a>
+    <a href="/alchemy/site/posts/getting-started.html" class="download">Download</a>
+    <div class="searchwrapper">
+      <input type="text" placeholder="Search..." id="searchbar">
+      <div class="autocompletions">
+        <!-- <span>asdf</span> -->
+      </div>
+    </div>
+    <script>
+      var idx = elasticlunr(function () {
+        this.setRef('name')
+        this.addField('section_title', {boost: 400})
+        this.addField('page_title', {boost: 200})
+        this.addField('text', {boost: 20})
+      })
+      fetch('/alchemy/site/assets/static/search_data.json')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(function (doc) {
+            idx.addDoc(doc)
+          })
+          console.log(data)
+        });
+      
+      document.getElementById('searchbar').addEventListener('focus', (e) => {
+        document.querySelector('.autocompletions').classList.toggle('show');
+        e.target.classList.toggle('sharpenBottom');
+      })
+      document.getElementById('searchbar').addEventListener('blur', (e) => {
+        setTimeout(() => {
+          document.querySelector('.autocompletions').classList.toggle('show');
+          e.target.classList.toggle('sharpenBottom');
+        }, 500)
+      })
+      document.getElementById('searchbar').addEventListener('keyup', (e) => {
+        document.querySelector('.autocompletions').innerHTML = ''
+        idx.search(e.target.value).forEach(itm => {
+          let a = document.createElement('a');
+          a.href = itm.ref;
+          a.innerHTML = itm.doc.page_title;
+          document.querySelector('.autocompletions').appendChild(a)
+          console.log(itm)
+        })
+      })
+    </script>
+  <!-- </div> -->
+</header>
+<main class="page-content" aria-label="Content">
+  <div class="wrapper">
+    <div class="nav">
+       
+      
+        <a href="/alchemy/site/posts/docs.html">Docs home</a>
+      
+        <a href="/alchemy/site/posts/getting-started.html">Getting Started</a>
+      
+        <a href="/alchemy/site/posts/configuration.html">Configuration</a>
+      
+        <a href="/alchemy/site/posts/markdown.html">Markdown</a>
+      
+        <a href="/alchemy/site/posts/custom-build.html">Custom Build Script</a>
+      
+        <a href="/alchemy/site/posts/theming.html">Theming</a>
+       
+    </div>
+      <div class="main">
+        <h1 id="alchemy-markdown" tabindex="-1">Alchemy Markdown</h1>
+<p>Alchemy is based on the popular npm package <code>markdown-it</code> (which uses the commonmark spec), extended by <code>highlight-js</code>, <code>markdown-it-anchor</code>, and <code>markdown-it-table-of-contents</code>. Anything that works for them will work for Alchemy out of the box. You can add more markdown functionality in <code>app.js</code> if you so choose.</p>
+<p>Refer to the Commonmark spec for more capabilities.</p>
+<h2 id="tables-of-contents" tabindex="-1">Tables of contents</h2>
+<p>The following markdown:</p>
+<pre><code class="language-markdown">[[toc]]
+</code></pre>
+<p>is rendered as:</p>
+<p><div class="table-of-contents"><ul><li><a href="#alchemy-markdown">Alchemy Markdown</a><ul><li><a href="#tables-of-contents">Tables of contents</a></li><li><a href="#headings">Headings</a></li><li><a href="#rich-text">Rich Text</a></li><li><a href="#blockquote">Blockquote</a></li><li><a href="#lists">Lists</a></li><li><a href="#code">Code</a></li><li><a href="#links">Links</a></li><li><a href="#images">Images</a></li><li><a href="#tables">Tables</a></li></ul></li></ul></div></p>
+<h2 id="headings" tabindex="-1">Headings</h2>
+<pre><code class="language-markdown"><span class="hljs-section"># Large heading</span>
+
+<span class="hljs-section">## Heading 2</span>
+
+<span class="hljs-section">### Heading 3</span>
+
+<span class="hljs-section">#### Heading 4</span>
+
+<span class="hljs-section">##### Heading 5</span>
+
+<span class="hljs-section">###### Heading 6</span>
+</code></pre>
+<h2 id="rich-text" tabindex="-1">Rich Text</h2>
+<pre><code class="language-markdown"><span class="hljs-emphasis">*italics*</span>, <span class="hljs-strong">**bold**</span>
+</code></pre>
+<h2 id="blockquote" tabindex="-1">Blockquote</h2>
+<pre><code class="language-markdown"><span class="hljs-quote">&gt; Blockquote text</span>
+</code></pre>
+<h2 id="lists" tabindex="-1">Lists</h2>
+<h3 id="ordered-lists%3A" tabindex="-1">Ordered Lists:</h3>
+<pre><code class="language-markdown"><span class="hljs-bullet">1.</span> item
+<span class="hljs-bullet">2.</span> item
+<span class="hljs-bullet">3.</span> item
+...
+</code></pre>
+<h3 id="unordered-lists%3A" tabindex="-1">Unordered Lists:</h3>
+<pre><code class="language-markdown"><span class="hljs-bullet">-</span> item
+<span class="hljs-bullet">-</span> item
+<span class="hljs-bullet">-</span> item
+...
+</code></pre>
+<h2 id="code" tabindex="-1">Code</h2>
+<p>Inline code:</p>
+<pre><code class="language-markdown"><span class="hljs-code">`inline-code`</span>
+</code></pre>
+<p>Code blocks:</p>
+<pre><code class="language-markdown"><span class="hljs-code">```
+code block
+```</span>
+</code></pre>
+<p>Code blocks with languages:</p>
+<pre><code class="language-markdown"><span class="hljs-code">```javascript
+console.log(&#x27;code blocks&#x27;);
+```</span>
+</code></pre>
+<p><a href="https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md">List of supported languages</a></p>
+<h2 id="links" tabindex="-1">Links</h2>
+<pre><code class="language-markdown">[<span class="hljs-string">link text</span>](<span class="hljs-link">url</span>)
+</code></pre>
+<h2 id="images" tabindex="-1">Images</h2>
+<pre><code class="language-markdown">![<span class="hljs-string">images</span>](<span class="hljs-link">image url</span>)
+</code></pre>
+<p>NOTE Images should be put in the <code>theme/static</code> folder, and can be accessed at <code>assets/static/</code> in your markdown.</p>
+<h2 id="tables" tabindex="-1">Tables</h2>
+<pre><code class="language-markdown">| Syntax | Description |
+| ----------- | ----------- |
+| Header | Title |
+| Paragraph | Text |
+</code></pre>
+
+        
+    
+<div class="footer">
+  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="jackcrane" data-description="Support me on Buy me a coffee!" data-message="Feeling Generous?" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+  
+  <script>
+    document.querySelectorAll('pre>code').forEach(e => e.classList.add('hljs'))
+  </script>
+</div>
+
+
+      </div>
+</div>
+</main>
+</body>
+</html>

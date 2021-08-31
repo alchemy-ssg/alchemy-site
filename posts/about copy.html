@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/alchemy/site/assets/css/main.css">
+  <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/github-dark-dimmed.css">
+  <title>About Alchemy</title>
+
+  <meta name="description" content="A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS">
+  <meta name="author" content="Jack Crane">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="About Alchemy">
+  <meta property="og:url" content="https://blog.jackcrane.rocks/posts/about copy.html">
+  <meta property="og:description" content="A modern, fast, easy-to-use jekyll alternative based on Javascript and EJS">
+  <meta property="article:author" content="Jack Crane">
+  <meta property="article:modified_time" content="1970-01-01T00:00:00.000Z">
+  <meta property="article:tag" content="jack crane, software engineering, web development, ">
+
+  <meta property="og:image" content="">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="About Alchemy">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+
+  <script src="http://elasticlunr.com/elasticlunr.min.js"></script>
+  
+</head>
+<body>
+  <header class="site-header">
+  <!-- <div class="wrapper"> -->
+    <!-- <a href="/alchemy/site" class="site-title" rel="author">Alchemy</a> -->
+    <a onclick="document.querySelector('.nav').classList.toggle('show')" class="menu" href="#">
+      <svg viewBox="0 0 100 80" width="15" height="15">
+        <rect width="100" height="20"></rect>
+        <rect y="30" width="100" height="20"></rect>
+        <rect y="60" width="100" height="20"></rect>
+      </svg>
+    </a>
+    <img src="/alchemy/site/assets/static/logomark.png" class="logo-wide" alt="">
+    <img src="/alchemy/site/assets/static/logomark_sm.png" class="logo-small" alt="">
+    <a href="/alchemy/site" class="home">Home</a>
+    <a href="/alchemy/site/posts/getting-started.html" class="download">Download</a>
+    <div class="searchwrapper">
+      <input type="text" placeholder="Search..." id="searchbar">
+      <div class="autocompletions">
+        <!-- <span>asdf</span> -->
+      </div>
+    </div>
+    <script>
+      var idx = elasticlunr(function () {
+        this.setRef('name')
+        this.addField('section_title', {boost: 400})
+        this.addField('page_title', {boost: 200})
+        this.addField('text', {boost: 20})
+      })
+      fetch('/alchemy/site/assets/static/search_data.json')
+        .then(response => response.json())
+        .then(data => {
+          data.forEach(function (doc) {
+            idx.addDoc(doc)
+          })
+          console.log(data)
+        });
+      
+      document.getElementById('searchbar').addEventListener('focus', (e) => {
+        document.querySelector('.autocompletions').classList.toggle('show');
+        e.target.classList.toggle('sharpenBottom');
+      })
+      document.getElementById('searchbar').addEventListener('blur', (e) => {
+        setTimeout(() => {
+          document.querySelector('.autocompletions').classList.toggle('show');
+          e.target.classList.toggle('sharpenBottom');
+        }, 500)
+      })
+      document.getElementById('searchbar').addEventListener('keyup', (e) => {
+        document.querySelector('.autocompletions').innerHTML = ''
+        idx.search(e.target.value).forEach(itm => {
+          let a = document.createElement('a');
+          a.href = itm.ref;
+          a.innerHTML = itm.doc.page_title;
+          document.querySelector('.autocompletions').appendChild(a)
+          console.log(itm)
+        })
+      })
+    </script>
+  <!-- </div> -->
+</header>
+<main class="page-content" aria-label="Content">
+  <div class="wrapper">
+    <div class="nav">
+       
+      
+        <a href="/alchemy/site/posts/about copy.html">About Alchemy</a>
+      
+        <a href="/alchemy/site/posts/about.html">About Alchemy</a>
+      
+        <a href="/alchemy/site/posts/getting-started.html">Getting Started</a>
+      
+        <a href="/alchemy/site/posts/configuration.html">Configuration</a>
+      
+        <a href="/alchemy/site/posts/markdown.html">Markdown</a>
+      
+        <a href="/alchemy/site/posts/custom-build.html">Custom Build Script</a>
+      
+        <a href="/alchemy/site/posts/theming.html">Theming</a>
+       
+    </div>
+      <div class="main">
+        <h1 id="alchemy" tabindex="-1">Alchemy</h1>
+<p>Alchemy is a modern, extremely simple, and easy to customize static site generator.</p>
+<h2 id="but-wait!-another-static-site-generator%3F" tabindex="-1">But wait! Another static site generator?</h2>
+<p>There are tons of awesome static site generators out there, like next.js, Gatsby, and Jekyll, all of which are absolutely awesome for what they do. Next.js and Gatsby are great for shipping React apps, and Jekyll for shipping Markdown apps.</p>
+<p>While building a huge Jekyll site (thousands of pages), I was dissapointed with the difficulty of customization and the lousy performance when building. This problem triggered me to build my own simple and fast generator.</p>
+<p>Built with node.js, markdown-it, and ejs, Alchemy allows for extremely simple content creation as well as rich templating support with layours and includes.</p>
+<h2 id="themes" tabindex="-1">Themes</h2>
+<p>Currently we only have one theme: a clone of Jekyll’s default theme Minima, but you are able to create your own theme easily. Learn more about creating themes <a href="theming.html">here</a></p>
+<h2 id="simplicity-at-the-core" tabindex="-1">Simplicity at the core</h2>
+<p>No more databases, dashboards, moderation, HTML, CSS, or suffering. Focus on writing awesome content with Markdown and let Alchemy take care of the rest.</p>
+
+        
+    
+<div class="footer">
+  <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="jackcrane" data-description="Support me on Buy me a coffee!" data-message="Feeling Generous?" data-color="#FFDD00" data-position="Right" data-x_margin="18" data-y_margin="18"></script>
+  
+  <script>
+    document.querySelectorAll('pre>code').forEach(e => e.classList.add('hljs'))
+  </script>
+</div>
+
+
+      </div>
+</div>
+</main>
+</body>
+</html>
