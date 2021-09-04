@@ -192,7 +192,7 @@ h1 {
   text-decoration: none;
   color: #424242;
   padding: 10px;
-  transition: color 0.2s, background-color 0.2s;
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
   border-radius: 10px;
   margin-bottom: 5px;
 }
@@ -200,6 +200,15 @@ h1 {
 .nav a:focus {
   background: #f4f7fe;
   color: #3367ff;
+}
+.nav .support {
+  background: #fff4f4;
+  color: #ff4d4d;
+  border: 2px solid #ff4d4d;
+}
+.nav .support:hover,
+.nav .support:focus {
+  border-color: #3367ff;
 }
 .main {
   padding-top: 75px;
